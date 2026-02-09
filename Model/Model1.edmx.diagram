@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="4760ced566684dd6b4fe1fd43dea111a" Name="Diagram1">
+        <EntityTypeShape EntityType="SmartLogisticsModel.AppRoles" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmartLogisticsModel.AppUsers" Width="1.5" PointX="5.25" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmartLogisticsModel.Categories" Width="1.5" PointX="11.75" PointY="16.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmartLogisticsModel.Components" Width="1.5" PointX="11" PointY="11.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmartLogisticsModel.ComponentTypes" Width="1.5" PointX="8.75" PointY="9.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmartLogisticsModel.CurrentInventory" Width="1.5" PointX="13.25" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmartLogisticsModel.Departments" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmartLogisticsModel.Equipment" Width="1.5" PointX="13" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmartLogisticsModel.EquipModels" Width="1.5" PointX="10.75" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmartLogisticsModel.EquipStatuses" Width="1.5" PointX="10.75" PointY="6.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmartLogisticsModel.EquipTypes" Width="1.5" PointX="10.75" PointY="21.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmartLogisticsModel.Items" Width="1.5" PointX="14" PointY="11.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmartLogisticsModel.ItemStatuses" Width="1.5" PointX="11.75" PointY="18.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmartLogisticsModel.JobTitles" Width="1.5" PointX="0.75" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmartLogisticsModel.Measures" Width="1.5" PointX="8.75" PointY="12.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmartLogisticsModel.PaymentTypes" Width="1.5" PointX="0.75" PointY="10.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmartLogisticsModel.ProductStructure" Width="1.5" PointX="16.25" PointY="9.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmartLogisticsModel.SkillLevels" Width="1.5" PointX="0.75" PointY="12.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmartLogisticsModel.Staff" Width="1.5" PointX="3" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmartLogisticsModel.StaffStatuses" Width="1.5" PointX="0.75" PointY="14.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmartLogisticsModel.Storages" Width="1.5" PointX="6" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmartLogisticsModel.StorageTypes" Width="1.5" PointX="3.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmartLogisticsModel.SupplyOrders" Width="1.5" PointX="8.25" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmartLogisticsModel.SupplyStatuses" Width="1.5" PointX="6" PointY="11.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmartLogisticsModel.Vendors" Width="1.5" PointX="6" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmartLogisticsModel.WorkOperations" Width="1.5" PointX="18.5" PointY="12.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmartLogisticsModel.WorkRoutes" Width="1.5" PointX="16.25" PointY="12.125" IsExpanded="true" />
+        <AssociationConnector Association="SmartLogisticsModel.FK__AppUsers__RoleID__08B54D69" ManuallyRouted="false" />
+        <AssociationConnector Association="SmartLogisticsModel.FK__AppUsers__StaffI__09A971A2" ManuallyRouted="false" />
+        <AssociationConnector Association="SmartLogisticsModel.FK__Items__CategoryI__5070F446" ManuallyRouted="false" />
+        <AssociationConnector Association="SmartLogisticsModel.FK__Component__Measu__5812160E" ManuallyRouted="false" />
+        <AssociationConnector Association="SmartLogisticsModel.FK__Component__TypeI__571DF1D5" ManuallyRouted="false" />
+        <AssociationConnector Association="SmartLogisticsModel.FK__CurrentIn__Compo__03F0984C" ManuallyRouted="false" />
+        <AssociationConnector Association="SmartLogisticsModel.FK__ProductSt__Compo__5BE2A6F2" ManuallyRouted="false" />
+        <AssociationConnector Association="SmartLogisticsModel.FK__CurrentIn__Stora__02FC7413" ManuallyRouted="false" />
+        <AssociationConnector Association="SmartLogisticsModel.FK__Staff__DeptID__75A278F5" ManuallyRouted="false" />
+        <AssociationConnector Association="SmartLogisticsModel.FK__Equipment__Model__1BC821DD" ManuallyRouted="false" />
+        <AssociationConnector Association="SmartLogisticsModel.FK__Equipment__Statu__1DB06A4F" ManuallyRouted="false" />
+        <AssociationConnector Association="SmartLogisticsModel.FK__Equipment__TypeI__1CBC4616" ManuallyRouted="false" />
+        <AssociationConnector Association="SmartLogisticsModel.FK__Items__MeasureID__5165187F" ManuallyRouted="false" />
+        <AssociationConnector Association="SmartLogisticsModel.FK__Items__StatusID__52593CB8" ManuallyRouted="false" />
+        <AssociationConnector Association="SmartLogisticsModel.FK__ProductSt__ItemI__5AEE82B9" ManuallyRouted="false" />
+        <AssociationConnector Association="SmartLogisticsModel.FK__WorkRoute__ItemI__5EBF139D" ManuallyRouted="false" />
+        <AssociationConnector Association="SmartLogisticsModel.FK__Staff__JobTitleI__74AE54BC" ManuallyRouted="false" />
+        <AssociationConnector Association="SmartLogisticsModel.FK__Staff__PaymentTy__778AC167" ManuallyRouted="false" />
+        <AssociationConnector Association="SmartLogisticsModel.FK__Staff__LevelID__76969D2E" ManuallyRouted="false" />
+        <AssociationConnector Association="SmartLogisticsModel.FK__Staff__StatusID__787EE5A0" ManuallyRouted="false" />
+        <AssociationConnector Association="SmartLogisticsModel.FK__SupplyOrd__Staff__7F2BE32F" ManuallyRouted="false" />
+        <AssociationConnector Association="SmartLogisticsModel.FK__Storages__Storag__68487DD7" ManuallyRouted="false" />
+        <AssociationConnector Association="SmartLogisticsModel.FK__SupplyOrd__Stora__7E37BEF6" ManuallyRouted="false" />
+        <AssociationConnector Association="SmartLogisticsModel.FK__SupplyOrd__Statu__00200768" ManuallyRouted="false" />
+        <AssociationConnector Association="SmartLogisticsModel.FK__SupplyOrd__Vendo__7D439ABD" ManuallyRouted="false" />
+        <AssociationConnector Association="SmartLogisticsModel.FK__WorkOpera__Route__619B8048" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

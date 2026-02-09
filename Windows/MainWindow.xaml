@@ -1,0 +1,108 @@
+﻿<Window x:Class="LogisticsWPF.Windows.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Smart Logistics"
+        Height="720" Width="1280"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource BackgroundColor}">
+
+    <Window.Resources>
+        <!-- Стиль для ГОРИЗОНТАЛЬНЫХ кнопок навигации -->
+        <Style x:Key="HorizontalNavRadioButtonStyle" TargetType="RadioButton">
+            <Setter Property="Foreground" Value="#D5D9E0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Padding" Value="18,10"/>
+            <!-- Сделаем их немного шире -->
+            <Setter Property="Margin" Value="2,0"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="0,0,0,3">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#34495E"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Background" Value="#34495E"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <!-- Подчеркивание активной кнопки -->
+                    <Setter Property="BorderBrush" Value="{StaticResource AccentColor}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <!-- Строка для верхней "шапки" -->
+            <RowDefinition Height="Auto"/>
+            <!-- Строка для основного контента -->
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Верхняя панель (шапка) -->
+        <Border Grid.Row="0" Background="{StaticResource PrimaryColor}" MinHeight="60">
+            <DockPanel VerticalAlignment="Center">
+
+                <!-- Логотип слева -->
+                <TextBlock DockPanel.Dock="Left" Text="Smart Logistics"
+                           Foreground="White" FontWeight="Bold" FontSize="20"
+                           VerticalAlignment="Center" Margin="20,0"/>
+
+                <!-- Информация о пользователе и выход (справа) -->
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="0,0,20,0">
+                    <StackPanel VerticalAlignment="Center" Margin="0,0,20,0" TextBlock.TextAlignment="Right">
+                        <TextBlock x:Name="UserNameTextBlock" Text="Имя пользователя"
+                                   Foreground="#ECF0F1" FontSize="14" FontWeight="SemiBold"/>
+                        <TextBlock x:Name="UserRoleTextBlock" Text="Роль"
+                                   Foreground="#95A5A6" FontSize="11"/>
+                    </StackPanel>
+                    <Button Content="Выйти"
+                            Click="LogoutButton_Click"
+                            Width="80" Height="30"
+                            VerticalAlignment="Center"
+                            Background="#E74C3C"
+                            FontWeight="Bold">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#C0392B"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </StackPanel>
+
+                <!-- Горизонтальное меню навигации (по центру) -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Stretch">
+                    <RadioButton GroupName="NavButtons" Style="{StaticResource HorizontalNavRadioButtonStyle}" Content="Поставщики" Click="SuppliersButton_Click" IsChecked="True"/>
+                    <RadioButton GroupName="NavButtons" Style="{StaticResource HorizontalNavRadioButtonStyle}" Content="Продукция" Click="ProductsButton_Click"/>
+                    <RadioButton GroupName="NavButtons" Style="{StaticResource HorizontalNavRadioButtonStyle}" Content="Компоненты" Click="ComponentsButton_Click"/>
+                    <RadioButton GroupName="NavButtons" Style="{StaticResource HorizontalNavRadioButtonStyle}" Content="Оборудование" Click="EquipmentButton_Click"/>
+                    <RadioButton GroupName="NavButtons" Style="{StaticResource HorizontalNavRadioButtonStyle}" Content="Сотрудники" Click="EmployeesButton_Click"/>
+                    <RadioButton GroupName="NavButtons" Style="{StaticResource HorizontalNavRadioButtonStyle}" Content="Заказы на поставку" Click="SupplyOrdersButton_Click"/>
+                </StackPanel>
+
+            </DockPanel>
+        </Border>
+
+        <!-- Основной контент (занимает все оставшееся место) -->
+        <Frame Grid.Row="1" x:Name="MainFrame" NavigationUIVisibility="Hidden" Margin="10"/>
+
+    </Grid>
+</Window>

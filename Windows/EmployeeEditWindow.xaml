@@ -1,0 +1,70 @@
+﻿<Window x:Class="LogisticsWPF.Windows.EmployeeEditWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Редактирование сотрудника"
+        Width="420"
+        Height="Auto"
+        SizeToContent="Height"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Background="{StaticResource BackgroundColor}"
+        FontFamily="{StaticResource AppFont}">
+    <Border Padding="20">
+        <StackPanel>
+            <!-- Заголовок -->
+            <TextBlock Text="Данные сотрудника"
+                       FontSize="22"
+                       FontWeight="Bold"
+                       Foreground="{StaticResource PrimaryColor}"
+                       Margin="0,0,0,20"/>
+
+            <!-- Форма ввода -->
+            <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="500">
+                <StackPanel>
+                    <TextBlock Text="Фамилия" FontWeight="SemiBold"/>
+                    <TextBox x:Name="SurnameTextBox"/>
+
+                    <TextBlock Text="Имя" Margin="0,10,0,0" FontWeight="SemiBold"/>
+                    <TextBox x:Name="NameTextBox"/>
+
+                    <TextBlock Text="Отчество" Margin="0,10,0,0" FontWeight="SemiBold"/>
+                    <TextBox x:Name="PatronymicTextBox"/>
+
+                    <TextBlock Text="Телефон" Margin="0,10,0,0" FontWeight="SemiBold"/>
+                    <TextBox x:Name="PhoneTextBox"/>
+
+                    <TextBlock Text="Должность" Margin="0,15,0,0" FontWeight="SemiBold"/>
+                    <ComboBox x:Name="JobTitleComboBox" DisplayMemberPath="Title" SelectedValuePath="JobTitleID"/>
+
+                    <TextBlock Text="Отдел" Margin="0,10,0,0" FontWeight="SemiBold"/>
+                    <ComboBox x:Name="DepartmentComboBox" DisplayMemberPath="DeptName" SelectedValuePath="DeptID"/>
+
+                    <TextBlock Text="Квалификация" Margin="0,10,0,0" FontWeight="SemiBold"/>
+                    <ComboBox x:Name="SkillLevelComboBox" DisplayMemberPath="LevelName" SelectedValuePath="LevelID"/>
+
+                    <TextBlock Text="Тип оплаты" Margin="0,10,0,0" FontWeight="SemiBold"/>
+                    <ComboBox x:Name="PaymentTypeComboBox" DisplayMemberPath="TypeName" SelectedValuePath="PaymentTypeID"/>
+
+                    <TextBlock Text="Статус" Margin="0,10,0,0" FontWeight="SemiBold"/>
+                    <ComboBox x:Name="StatusComboBox" DisplayMemberPath="StatusName" SelectedValuePath="StatusID"/>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- Кнопки управления -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,25,0,0">
+                <Button Content="Сохранить"
+                        Width="120"
+                        Height="35"
+                        Click="Save_Click"
+                        Background="{StaticResource AccentColor}"/>
+                <Button Content="Отмена"
+                        Width="120"
+                        Height="35"
+                        Margin="10,0,0,0"
+                        Click="Cancel_Click"
+                        Background="#B0B9C2"
+                        />
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</Window>
