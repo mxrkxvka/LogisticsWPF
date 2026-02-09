@@ -1,440 +1,234 @@
-CREATE DATABASE Logistics;
+CREATE DATABASE SmartLogistics;
 GO
-USE Logistics;
+USE SmartLogistics;
 GO
 
-CREATE TABLE Units (
-    UnitID INT IDENTITY PRIMARY KEY,
+CREATE TABLE Measures (
+    MeasureID INT IDENTITY PRIMARY KEY,
     Name NVARCHAR(15)
 );
 
-CREATE TABLE ProductCategories (
-    ProductCategoryID INT IDENTITY PRIMARY KEY,
-    Name NVARCHAR(25)
+CREATE TABLE Categories (
+    CategoryID INT IDENTITY PRIMARY KEY,
+    Title NVARCHAR(25)
 );
 
-CREATE TABLE ProductStatuses (
-    ProductStatusID INT IDENTITY PRIMARY KEY,
-    Name NVARCHAR(20)
+CREATE TABLE ItemStatuses (
+    StatusID INT IDENTITY PRIMARY KEY,
+    StatusName NVARCHAR(20)
 );
 
-CREATE TABLE Products (
-    ProductID INT IDENTITY PRIMARY KEY,
-    Article NVARCHAR(30),
-    Name NVARCHAR(50),
-    ProductCategoryID INT,
-    Description NVARCHAR(255),
-    UnitID INT,
-    ProductStatusID INT,
-    FOREIGN KEY (ProductCategoryID) REFERENCES ProductCategories(ProductCategoryID),
-    FOREIGN KEY (UnitID) REFERENCES Units(UnitID),
-    FOREIGN KEY (ProductStatusID) REFERENCES ProductStatuses(ProductStatusID)
+CREATE TABLE Items (
+    ItemID INT IDENTITY PRIMARY KEY,
+    SKU NVARCHAR(30), -- Артикул
+    FullTitle NVARCHAR(50),
+    CategoryID INT,
+    Details NVARCHAR(255),
+    MeasureID INT,
+    StatusID INT,
+    FOREIGN KEY (CategoryID) REFERENCES Categories(CategoryID),
+    FOREIGN KEY (MeasureID) REFERENCES Measures(MeasureID),
+    FOREIGN KEY (StatusID) REFERENCES ItemStatuses(StatusID)
 );
 
-CREATE TABLE MaterialTypes (
-    MaterialTypeID INT IDENTITY PRIMARY KEY,
-    Name NVARCHAR(20)
+CREATE TABLE ComponentTypes (
+    TypeID INT IDENTITY PRIMARY KEY,
+    TypeName NVARCHAR(20)
 );
 
-CREATE TABLE Materials (
-    MaterialID INT IDENTITY PRIMARY KEY,
-    Code NVARCHAR(10),
-    Name NVARCHAR(50),
-    MaterialTypeID INT,
-    UnitID INT,
-    MinStock DECIMAL(18,2),
-    MarketPrice DECIMAL(18,2),
-    FOREIGN KEY (MaterialTypeID) REFERENCES MaterialTypes(MaterialTypeID),
-    FOREIGN KEY (UnitID) REFERENCES Units(UnitID)
+CREATE TABLE Components (
+    ComponentID INT IDENTITY PRIMARY KEY,
+    SerialCode NVARCHAR(10),
+    Title NVARCHAR(50),
+    TypeID INT,
+    MeasureID INT,
+    MinBalance DECIMAL(18,2),
+    Price DECIMAL(18,2),
+    FOREIGN KEY (TypeID) REFERENCES ComponentTypes(TypeID),
+    FOREIGN KEY (MeasureID) REFERENCES Measures(MeasureID)
 );
 
-CREATE TABLE BillOfMaterials (
-    BillOfMaterialsID INT IDENTITY PRIMARY KEY,
-    ProductID INT,
-    MaterialID INT,
-    Quantity DECIMAL(18,2),
-    FOREIGN KEY (ProductID) REFERENCES Products(ProductID),
-    FOREIGN KEY (MaterialID) REFERENCES Materials(MaterialID)
+CREATE TABLE ProductStructure (
+    StructureID INT IDENTITY PRIMARY KEY,
+    ItemID INT,
+    ComponentID INT,
+    Amount DECIMAL(18,2),
+    FOREIGN KEY (ItemID) REFERENCES Items(ItemID),
+    FOREIGN KEY (ComponentID) REFERENCES Components(ComponentID)
 );
 
-CREATE TABLE TechRoutes (
-    TechRouteID INT IDENTITY PRIMARY KEY,
-    ProductID INT,
-    Name NVARCHAR(30),
-    FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
+CREATE TABLE WorkRoutes (
+    RouteID INT IDENTITY PRIMARY KEY,
+    ItemID INT,
+    RouteName NVARCHAR(30),
+    FOREIGN KEY (ItemID) REFERENCES Items(ItemID)
 );
 
-CREATE TABLE TechOperations (
-    TechOperationID INT IDENTITY PRIMARY KEY,
-    TechRouteID INT,
-    Name NVARCHAR(50),
-    SequenceNumber INT,
-    DurationMinutes INT,
-    FOREIGN KEY (TechRouteID) REFERENCES TechRoutes(TechRouteID)
+CREATE TABLE WorkOperations (
+    OperationID INT IDENTITY PRIMARY KEY,
+    RouteID INT,
+    OpName NVARCHAR(50),
+    StepNumber INT,
+    TimeLimitMinutes INT,
+    FOREIGN KEY (RouteID) REFERENCES WorkRoutes(RouteID)
 );
 
-CREATE TABLE Suppliers (
-    SupplierID INT IDENTITY PRIMARY KEY,
-    INN NVARCHAR(20),
-    Name NVARCHAR(50),
-    Email NVARCHAR(30),
-    ReliabilityRating INT,
-    PaymentTerms NVARCHAR(50)
+CREATE TABLE Vendors (
+    VendorID INT IDENTITY PRIMARY KEY,
+    TaxNumber NVARCHAR(20),
+    CompanyTitle NVARCHAR(50),
+    ContactEmail NVARCHAR(30),
+    Rating INT,
+    PayConditions NVARCHAR(50)
 );
 
-CREATE TABLE WarehouseTypes (
-    WarehouseTypeID INT IDENTITY PRIMARY KEY,
-    Name NVARCHAR(20)
+CREATE TABLE StorageTypes (
+    StorageTypeID INT IDENTITY PRIMARY KEY,
+    TypeName NVARCHAR(20)
 );
 
-CREATE TABLE Warehouses (
-    WarehouseID INT IDENTITY PRIMARY KEY,
-    Name NVARCHAR(30),
-    WarehouseTypeID INT,
-    FOREIGN KEY (WarehouseTypeID) REFERENCES WarehouseTypes(WarehouseTypeID)
+CREATE TABLE Storages (
+    StorageID INT IDENTITY PRIMARY KEY,
+    Title NVARCHAR(30),
+    StorageTypeID INT,
+    FOREIGN KEY (StorageTypeID) REFERENCES StorageTypes(StorageTypeID)
 );
 
-CREATE TABLE Positions (
-    PositionID INT IDENTITY PRIMARY KEY,
-    Name NVARCHAR(20)
+CREATE TABLE JobTitles (
+    JobTitleID INT IDENTITY PRIMARY KEY,
+    Title NVARCHAR(20)
 );
 
 CREATE TABLE Departments (
-    DepartmentID INT IDENTITY PRIMARY KEY,
-    Name NVARCHAR(20)
+    DeptID INT IDENTITY PRIMARY KEY,
+    DeptName NVARCHAR(20)
 );
 
-CREATE TABLE Qualifications (
-    QualificationID INT IDENTITY PRIMARY KEY,
-    Name NVARCHAR(20)
+CREATE TABLE SkillLevels (
+    LevelID INT IDENTITY PRIMARY KEY,
+    LevelName NVARCHAR(20)
 );
 
-CREATE TABLE SalaryTypes (
-    SalaryTypeID INT IDENTITY PRIMARY KEY,
-    Name NVARCHAR(20)
+CREATE TABLE PaymentTypes (
+    PaymentTypeID INT IDENTITY PRIMARY KEY,
+    TypeName NVARCHAR(20)
 );
 
-CREATE TABLE EmployeeStatuses (
-    EmployeeStatusID INT IDENTITY PRIMARY KEY,
-    Name NVARCHAR(20)
+CREATE TABLE StaffStatuses (
+    StatusID INT IDENTITY PRIMARY KEY,
+    StatusName NVARCHAR(20)
 );
 
-CREATE TABLE Employees (
-    EmployeeID INT IDENTITY PRIMARY KEY,
-    PhoneNumber NVARCHAR(15),
+CREATE TABLE Staff (
+    StaffID INT IDENTITY PRIMARY KEY,
+    Phone NVARCHAR(15),
     Surname NVARCHAR(30),
-    Name NVARCHAR(30),
-    MiddleName NVARCHAR(30),
-    PositionID INT,
-    DepartmentID INT,
-    QualificationID INT,
-    SalaryTypeID INT,
-    EmployeeStatusID INT,
-    FOREIGN KEY (PositionID) REFERENCES Positions(PositionID),
-    FOREIGN KEY (DepartmentID) REFERENCES Departments(DepartmentID),
-    FOREIGN KEY (QualificationID) REFERENCES Qualifications(QualificationID),
-    FOREIGN KEY (SalaryTypeID) REFERENCES SalaryTypes(SalaryTypeID),
-    FOREIGN KEY (EmployeeStatusID) REFERENCES EmployeeStatuses(EmployeeStatusID)
+    FirstName NVARCHAR(30),
+    Patronymic NVARCHAR(30),
+    JobTitleID INT,
+    DeptID INT,
+    LevelID INT,
+    PaymentTypeID INT,
+    StatusID INT,
+    FOREIGN KEY (JobTitleID) REFERENCES JobTitles(JobTitleID),
+    FOREIGN KEY (DeptID) REFERENCES Departments(DeptID),
+    FOREIGN KEY (LevelID) REFERENCES SkillLevels(LevelID),
+    FOREIGN KEY (PaymentTypeID) REFERENCES PaymentTypes(PaymentTypeID),
+    FOREIGN KEY (StatusID) REFERENCES StaffStatuses(StatusID)
 );
 
-CREATE TABLE PurchaseStatuses (
-    PurchaseStatusID INT IDENTITY PRIMARY KEY,
-    Name NVARCHAR(20)
+CREATE TABLE SupplyStatuses (
+    StatusID INT IDENTITY PRIMARY KEY,
+    StatusName NVARCHAR(20)
 );
 
-CREATE TABLE PurchaseOrders (
-    PurchaseOrderID INT IDENTITY PRIMARY KEY,
-    SupplierID INT,
-    WarehouseID INT, 
-    EmployeeID INT, 
+CREATE TABLE SupplyOrders (
+    OrderID INT IDENTITY PRIMARY KEY,
+    VendorID INT,
+    StorageID INT, 
+    StaffID INT, 
     OrderDate DATE,
-    ExpectedDate DATE, 
-    PurchaseStatusID INT,
-    FOREIGN KEY (SupplierID) REFERENCES Suppliers(SupplierID),
-    FOREIGN KEY (WarehouseID) REFERENCES Warehouses(WarehouseID),
-    FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID),
-    FOREIGN KEY (PurchaseStatusID) REFERENCES PurchaseStatuses(PurchaseStatusID)
+    DeliveryDate DATE, 
+    StatusID INT,
+    FOREIGN KEY (VendorID) REFERENCES Vendors(VendorID),
+    FOREIGN KEY (StorageID) REFERENCES Storages(StorageID),
+    FOREIGN KEY (StaffID) REFERENCES Staff(StaffID),
+    FOREIGN KEY (StatusID) REFERENCES SupplyStatuses(StatusID)
 );
 
-CREATE TABLE PurchaseReceipts (
-    PurchaseReceiptID INT IDENTITY PRIMARY KEY,
-    PurchaseOrderID INT,
-    ReceiptDate DATE,
-    AcceptedQuantity DECIMAL(18,2),
-    DefectQuantity DECIMAL(18,2),
-    FOREIGN KEY (PurchaseOrderID) REFERENCES PurchaseOrders(PurchaseOrderID)
-);
-
-CREATE TABLE StockBalances (
-    StockBalanceID INT IDENTITY PRIMARY KEY,
-    WarehouseID INT,
-    MaterialID INT,
+CREATE TABLE CurrentInventory (
+    InventoryID INT IDENTITY PRIMARY KEY,
+    StorageID INT,
+    ComponentID INT,
     Quantity DECIMAL(18,2),
-    FOREIGN KEY (WarehouseID) REFERENCES Warehouses(WarehouseID),
-    FOREIGN KEY (MaterialID) REFERENCES Materials(MaterialID)
+    FOREIGN KEY (StorageID) REFERENCES Storages(StorageID),
+    FOREIGN KEY (ComponentID) REFERENCES Components(ComponentID)
 );
 
-CREATE TABLE Clients (
-    ClientID INT IDENTITY PRIMARY KEY,
-    Name NVARCHAR(50),
-    Email NVARCHAR(30)
+CREATE TABLE AppRoles (
+    RoleID INT IDENTITY PRIMARY KEY,
+    RoleName NVARCHAR(30)
 );
 
-CREATE TABLE ProductionOrderStatuses (
-    ProductionOrderStatusID INT IDENTITY PRIMARY KEY,
-    Name NVARCHAR(20)
+CREATE TABLE AppUsers (
+    UserID INT IDENTITY PRIMARY KEY,
+    LoginName NVARCHAR(30),
+    PasswordKey NVARCHAR(30),
+    RoleID INT,
+    StaffID INT,
+    FOREIGN KEY (RoleID) REFERENCES AppRoles(RoleID),
+    FOREIGN KEY (StaffID) REFERENCES Staff(StaffID)
 );
+GO
 
-CREATE TABLE ProductionOrders (
-    ProductionOrderID INT IDENTITY PRIMARY KEY,
-    ClientID INT,
-    ProductID INT,
-    Quantity INT,
-    Priority INT,
-    Deadline DATE,
-    ProductionOrderStatusID INT,
-    FOREIGN KEY (ClientID) REFERENCES Clients(ClientID),
-    FOREIGN KEY (ProductID) REFERENCES Products(ProductID),
-    FOREIGN KEY (ProductionOrderStatusID) REFERENCES ProductionOrderStatuses(ProductionOrderStatusID)
-);
+INSERT INTO Measures (Name) VALUES ('шт'), ('кг'), ('палл');
+INSERT INTO Categories (Title) VALUES ('Мебель'), ('Техника');
+INSERT INTO ItemStatuses (StatusName) VALUES ('Доступен');
+INSERT INTO AppRoles (RoleName) VALUES ('Admin'), ('User');
+INSERT INTO JobTitles (Title) VALUES ('Директор'), ('Мастер');
+INSERT INTO Departments (DeptName) VALUES ('Главный офис'), ('Цех 1');
+INSERT INTO StaffStatuses (StatusName) VALUES ('В штате');
+INSERT INTO SkillLevels (LevelName) VALUES ('Высший');
+INSERT INTO PaymentTypes (TypeName) VALUES ('Оклад');
 
-CREATE TABLE ProductionStageStatuses (
-    ProductionStageStatusID INT IDENTITY PRIMARY KEY,
-    Name NVARCHAR(20)
-);
+INSERT INTO Staff (Surname, FirstName, JobTitleID, DeptID, StatusID) 
+VALUES ('Иванов', 'Иван', 1, 1, 1);
 
-CREATE TABLE Stages (
-    StageID INT IDENTITY PRIMARY KEY,
-    Name NVARCHAR(20)
-);
+INSERT INTO AppUsers (LoginName, PasswordKey, RoleID, StaffID)
+VALUES ('admin', 'admin', 1, 1);
 
-CREATE TABLE ProductionStages (
-    ProductionStageID INT IDENTITY PRIMARY KEY,
-    ProductionOrderID INT,
-    StageID INT,
-    ProductionStageStatusID INT,
-    FOREIGN KEY (ProductionOrderID) REFERENCES ProductionOrders(ProductionOrderID),
-    FOREIGN KEY (StageID) REFERENCES Stages(StageID),
-    FOREIGN KEY (ProductionStageStatusID) REFERENCES ProductionStageStatuses(ProductionStageStatusID)
-);
+USE SmartLogistics;
+GO
 
-CREATE TABLE Models (
+CREATE TABLE EquipModels (
     ModelID INT IDENTITY PRIMARY KEY,
-    Name NVARCHAR(20)
+    ModelName NVARCHAR(30)
 );
 
-CREATE TABLE EquipmentTypes (
-    EquipmentTypeID INT IDENTITY PRIMARY KEY,
-    Name NVARCHAR(20)
+CREATE TABLE EquipTypes (
+    TypeID INT IDENTITY PRIMARY KEY,
+    TypeName NVARCHAR(30)
 );
 
-CREATE TABLE EquipmentStatuses (
-    EquipmentStatusID INT IDENTITY PRIMARY KEY,
-    Name NVARCHAR(20)
+CREATE TABLE EquipStatuses (
+    StatusID INT IDENTITY PRIMARY KEY,
+    StatusName NVARCHAR(30)
 );
 
 CREATE TABLE Equipment (
     EquipmentID INT IDENTITY PRIMARY KEY,
-    InventoryNumber NVARCHAR(10),
+    InventoryNumber NVARCHAR(20),
     ModelID INT,
-    EquipmentTypeID INT,
+    TypeID INT,
     CommissionDate DATE,
-    EquipmentStatusID INT,
+    StatusID INT,
     MaintenanceSchedule NVARCHAR(100),
-    FOREIGN KEY (ModelID) REFERENCES Models(ModelID),
-    FOREIGN KEY (EquipmentTypeID) REFERENCES EquipmentTypes(EquipmentTypeID),
-    FOREIGN KEY (EquipmentStatusID) REFERENCES EquipmentStatuses(EquipmentStatusID)
+    FOREIGN KEY (ModelID) REFERENCES EquipModels(ModelID),
+    FOREIGN KEY (TypeID) REFERENCES EquipTypes(TypeID),
+    FOREIGN KEY (StatusID) REFERENCES EquipStatuses(StatusID)
 );
 
-CREATE TABLE QualityDefects (
-    QualityDefectID INT IDENTITY PRIMARY KEY,
-    ProductionStageID INT,
-    Description NVARCHAR(255),
-    DefectDate DATE,
-    FOREIGN KEY (ProductionStageID) REFERENCES ProductionStages(ProductionStageID)
-);
-
-CREATE TABLE WorkLogs (
-    WorkLogID INT IDENTITY PRIMARY KEY,
-    EmployeeID INT,
-    ProductionStageID INT,
-    HoursWorked DECIMAL(5,2),
-    WorkDate DATE,
-    FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID),
-    FOREIGN KEY (ProductionStageID) REFERENCES ProductionStages(ProductionStageID)
-);
-
-CREATE TABLE EquipmentUsageLogs (
-    EquipmentUsageLogID INT IDENTITY PRIMARY KEY,
-    EquipmentID INT,
-    ProductionStageID INT,
-    UsageHours DECIMAL(5,2),
-    UsageDate DATE,
-    FOREIGN KEY (EquipmentID) REFERENCES Equipment(EquipmentID),
-    FOREIGN KEY (ProductionStageID) REFERENCES ProductionStages(ProductionStageID)
-);
-
-CREATE TABLE Roles (
-    RoleID INT IDENTITY PRIMARY KEY,
-    Name NVARCHAR(30)
-);
-
-CREATE TABLE [Users] (
-    UserID INT IDENTITY PRIMARY KEY,
-    Login NVARCHAR(30),
-    Password NVARCHAR(30),
-    RoleID INT,
-    EmployeeID INT,
-    FOREIGN KEY (RoleID) REFERENCES Roles(RoleID),
-    FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID)
-);
-GO
-
-USE Logistics;
-GO
-
-INSERT INTO Units (Name) VALUES
-('шт'), ('кг'), ('л'), ('м'), ('компл');
-
-INSERT INTO ProductCategories (Name) VALUES
-('Оборудование'), ('Мебель'), ('Бытовая техника'), ('Электроника'), ('Инструмент');
-
-INSERT INTO ProductStatuses (Name) VALUES
-('Активен'), ('Снят с производства');
-
-INSERT INTO Products (Article, Name, ProductCategoryID, Description, UnitID, ProductStatusID) VALUES
-('PR-001','Станок А',1,'Промышленный станок',1,1),
-('PR-002','Шкаф B',2,'Металлический шкаф',1,1),
-('PR-003','Диван C',2,'Мягкий диван',1,1),
-('PR-004','Стиральная машина D',3,'Стиральная машина 7кг',1,1),
-('PR-005','Пресс E',1,'Гидравлический пресс',1,1);
-
-INSERT INTO MaterialTypes (Name) VALUES
-('Сырьё'), ('Комплектующее'), ('Электроника'), ('Химия'), ('Металл');
-
-INSERT INTO Materials (Code, Name, MaterialTypeID, UnitID, MinStock, MarketPrice) VALUES
-('MAT-01','Сталь листовая',5,2,500,75),
-('MAT-02','Электродвигатель',2,1,10,15000),
-('MAT-03','ДСП',1,2,100,1200),
-('MAT-04','Пена',1,2,50,500),
-('MAT-05','Краска',4,3,20,250);
-
-INSERT INTO Suppliers (INN, Name, Email, ReliabilityRating, PaymentTerms) VALUES
-('7701234567','МеталлПром','metal@sup.ru',5,'Отсрочка 30 дней'),
-('7812345678','ЭлектроКомплект','electro@sup.ru',4,'Предоплата'),
-('7723456789','МебельСнаб','furniture@sup.ru',5,'Отсрочка 15 дней'),
-('7734567890','ХимТрейд','chem@sup.ru',3,'Предоплата'),
-('7745678901','ЭлектроМотор','motor@sup.ru',4,'Отсрочка 10 дней');
-
-INSERT INTO WarehouseTypes (Name) VALUES
-('Основной'), ('Брак'), ('Временный'), ('Готовая продукция'), ('Комплектующие');
-
-INSERT INTO Warehouses (Name, WarehouseTypeID) VALUES
-('Основной склад',1),
-('Склад брака',2),
-('Временный склад',3),
-('Склад готовой продукции',4),
-('Склад комплектующих',5);
-
-INSERT INTO Positions (Name) VALUES
-('Слесарь'), ('Сборщик'), ('Маляр'), ('Тестировщик'), ('Упаковщик');
-
-INSERT INTO Departments (Name) VALUES
-('Производство'), ('Контроль качества'), ('Логистика'), ('Склад'), ('Отдел снабжения');
-
-INSERT INTO Qualifications (Name) VALUES
-('Начальный'), ('Средний'), ('Высший'), ('Эксперт'), ('Мастер');
-
-INSERT INTO SalaryTypes (Name) VALUES
-('Почасовая'), ('Оклад');
-
-INSERT INTO EmployeeStatuses (Name) VALUES
-('Работает'), ('Уволен');
-
-INSERT INTO Employees (PhoneNumber, Surname, Name, MiddleName, PositionID, DepartmentID, QualificationID, SalaryTypeID, EmployeeStatusID) VALUES
-('89161234567','Мащенко','Евгений','Викторович',1,1,2,1,1),
-('89261234568','Турышев','Евгений','Владимирович',2,1,3,2,1),
-('89361234569','Дорохов','Дмитрий','Евгеньевич',3,1,2,1,1),
-('89461234570','Кривец','Никита','Сергеевич',4,2,3,2,1),
-('89561234571','Овчаренко','Максим','Андреевич',5,1,1,1,1);
-
-INSERT INTO PurchaseStatuses (Name) VALUES
-('Создан'), ('В процессе'), ('Закрыт'), ('Отменён'), ('Частично принят');
-
-INSERT INTO PurchaseOrders (SupplierID, WarehouseID, EmployeeID, OrderDate, ExpectedDate, PurchaseStatusID) VALUES
-(1,1,1,'2026-01-10','2026-01-15',1),
-(2,5,2,'2026-01-12','2026-01-18',1),
-(3,1,3,'2026-01-15','2026-01-22',1),
-(4,3,4,'2026-01-18','2026-01-25',1),
-(5,1,5,'2026-01-20','2026-01-28',1);
-
-INSERT INTO PurchaseReceipts (PurchaseOrderID, ReceiptDate, AcceptedQuantity, DefectQuantity) VALUES
-(1,'2026-01-15',1000,20),
-(2,'2026-01-17',50,0),
-(3,'2026-01-20',200,5),
-(4,'2026-01-22',30,2),
-(5,'2026-01-25',10,0);
-
-INSERT INTO StockBalances (WarehouseID, MaterialID, Quantity) VALUES
-(1,1,1000),
-(1,2,20),
-(3,3,500),
-(4,4,100),
-(5,5,50);
-
-INSERT INTO Clients (Name, Email) VALUES
-('ООО Марсель','marseilles@mail.ru'),
-('ИП Власов','vlasov@mail.ru'),
-('ООО ПСЖ','psg@mail.ru'),
-('ООО Монако','monaco@mail.ru'),
-('ИП Каримов','karimov@mail.ru');
-
-INSERT INTO ProductionOrderStatuses (Name) VALUES
-('Запланирован'), ('В работе'), ('На контроле качества'), ('Готов к отгрузке'), ('Отгружен'), ('Приостановлен'), ('Отменён'), ('Возврат на доработку');
-
-INSERT INTO ProductionOrders (ClientID, ProductID, Quantity, Priority, Deadline, ProductionOrderStatusID) VALUES
-(1,1,5,1,'2026-02-01',1),
-(2,2,10,2,'2026-02-05',1),
-(3,3,3,1,'2026-02-03',1),
-(4,4,7,3,'2026-02-10',1),
-(5,5,2,2,'2026-02-08',1);
-
-INSERT INTO ProductionStageStatuses (Name) VALUES
-('Запланирован'), ('В работе'), ('На контроле качества'), ('Готов к отгрузке'), ('Отгружен');
-
-INSERT INTO Stages (Name) VALUES
-('Заготовка'), ('Сборка'), ('Тестирование'), ('Упаковка'), ('Покраска');
-
-INSERT INTO ProductionStages (ProductionOrderID, StageID, ProductionStageStatusID) VALUES
-(1,1,2),
-(1,2,2),
-(2,1,1),
-(2,2,1),
-(3,5,1);
-
-INSERT INTO Models (Name) VALUES
-('DMG-100'), ('PR-200'), ('PA-300'), ('TS-400'), ('UP-500');
-
-INSERT INTO EquipmentTypes (Name) VALUES
-('Станок'), ('Пресс'), ('Покрасочная камера'), ('Тест-оборудование'), ('Упаковочная линия');
-
-INSERT INTO EquipmentStatuses (Name) VALUES
-('В работе'), ('В ремонте'), ('На ТО'), ('Списано');
-
-INSERT INTO Equipment (InventoryNumber, ModelID, EquipmentTypeID, CommissionDate, EquipmentStatusID, MaintenanceSchedule) VALUES
-('EQ-001',1,1,'2022-01-01',1,'Раз в 6 месяцев'),
-('EQ-002',2,2,'2021-05-15',1,'Раз в 12 месяцев'),
-('EQ-003',3,3,'2020-08-10',2,'Раз в 3 месяца'),
-('EQ-004',4,4,'2023-02-20',1,'Раз в 6 месяцев'),
-('EQ-005',5,5,'2022-11-01',1,'Раз в 6 месяцев');
-
-INSERT INTO Roles (Name) VALUES
-('Администратор'), ('Планировщик'), ('Кладовщик'), ('Контроль качества'), ('Работник производства');
-
-INSERT INTO [Users] (Login, Password, RoleID, EmployeeID) VALUES
-('admin','123',1,1),
-('planner','password123',2,2),
-('warehouse','password123',3,3),
-('qc','password123',4,4),
-('worker','password123',5,5);
+INSERT INTO EquipModels (ModelName) VALUES ('DMG-100'), ('HP-LaserJet');
+INSERT INTO EquipTypes (TypeName) VALUES ('Станок'), ('Оргтехника');
+INSERT INTO EquipStatuses (StatusName) VALUES ('Работает'), ('В ремонте');
 GO
